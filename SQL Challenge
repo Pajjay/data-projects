@@ -1,3 +1,6 @@
+Make sure to tag @Steel Data and @Matthew Steel
+Challenge Source: https://steeldata.org.uk/sql2.html
+
 Intro
 The top eSports competitors from across the globe have gathered to battle it out
 Can you analyze the following data to find out all about the tournament?
@@ -70,11 +73,7 @@ VALUES (1, 1, 2, '2022-01-01', 1, 16, 14),
 (10, 4, 5, '2022-01-01', 4, 13, 10);
 
 
-Questions
-Answer the following questions
-Then write a LinkedIn post saying what you have learnt or enjoyed
-
-Make sure to tag @Steel Data and @Matthew Steel
+Questions:
 
 1. What are the names of the players whose salary is greater than 100,000?
 SELECT player_id, player_name, role, salary
