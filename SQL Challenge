@@ -1,6 +1,6 @@
 Intro
 The top eSports competitors from across the globe have gathered to battle it out
-Can you analyse the following data to find out all about the tournament?
+Can you analyze the following data to find out all about the tournament?
 
 Copy the following code into the "Schema SQL" section on https://www.db-fiddle.com/
 
@@ -77,12 +77,73 @@ Then write a LinkedIn post saying what you have learnt or enjoyed
 Make sure to tag @Steel Data and @Matthew Steel
 
 1. What are the names of the players whose salary is greater than 100,000?
+SELECT player_id, player_name, role, salary
+        FROM Players
+        WHERE salary > 100000
+        ORDER BY salary desc
+Result: ForceZ, Joker, Daron, Faker, Castle09, Perkz, Wringer
+
 2. What is the team name of the player with player_id = 3?
+SELECT Teams.team_name, Players.player_name, Players.player_id
+        FROM Teams
+        LEFT JOIN Players ON Teams.team_id = Players.team_id
+        WHERE player_id = 3
+Result: SK Telecom T1
+
 3. What is the total number of players in each team?
+SELECT COUNT(Players.player_name), Players.team_id
+        FROM Players
+        GROUP BY team_id
+Result: 3 players per team
+
 4. What is the team name and captain name of the team with team_id = 2?
+SELECT Players.player_name, Players.role, Teams.team_name, Teams.team_id
+        FROM Teams
+        JOIN Players ON Players.team_id = Teams.team_id
+        WHERE Teams.captain_id = Players.player_id AND Teams.team_id = 2
+Result: Team Name = Fnatic, Player Name = JW
+
 5. What are the player names and their roles in the team with team_id = 1?
+SELECT Players.player_name, Players.role, Teams.team_name, Teams.team_id
+        FROM Teams
+        JOIN Players ON Players.team_id = Teams.team_id
+        WHERE Teams.team_id = 1
+Result: Shroud-Rifler, Castle09-AWP, KL34-Mid Laner
+
 6. What are the team names and the number of matches they have won?
+SELECT COUNT(Matches.match_id), Teams.team_name, Teams.team_id
+        FROM Teams
+        JOIN Matches ON Teams.team_id = Matches.winner_id
+        GROUP BY Teams.team_id 
+        ORDER BY Teams.team_id
+Result: Cloud 9 - 3, Fnatic - 1, SK Telecom T1 - 4, Team Liquid - 1, G2 Esports -  1
+
 7. What is the average salary of players in the teams with country 'USA'?
+SELECT Teams.team_name, AVG(Players.salary)
+        FROM Teams
+        JOIN Players ON Teams.team_id = Players.team_id
+        WHERE Teams.country = 'USA'
+        GROUP BY Teams.team_name
+Result:  Cloud9- 101000 ; Team Liquid - 93333.33
+
 8. Which team won the most matches?
+SELECT Teams.team_name, COUNT(Matches.match_id) as 'Matches Won'
+        FROM Teams
+        JOIN Matches ON Teams.team_id = Matches.winner_id
+        GROUP BY Teams.team_name
+        ORDER BY COUNT(Matches.match_id) desc
+Result: SK Telecom T1 - 4 matches won
+
 9. What are the team names and the number of players in each team whose salary is greater than 100,000?
+SELECT Teams.team_name, COUNT(Players.player_name)
+        FROM Teams
+        JOIN Players ON Teams.team_id = Players.team_id
+        WHERE Players.salary > 100000
+        GROUP BY Teams.team_name
+Result: Cloud9 - 1, Fnatic - 1, G2 Esports - 2, SK Telecom T1 - 3
+
 10. What is the date and the score of the match with match_id = 3?
+SELECT Matches.match_id, Matches.match_date, CONCAT(Matches.score_team1, ' -', Matches.score_team2) as 'Match Score'
+        FROM Matches
+        WHERE match_id=3
+Result: 2022-03-01, 17-13
